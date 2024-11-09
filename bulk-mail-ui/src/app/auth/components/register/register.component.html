@@ -1,0 +1,76 @@
+<div class="bg-primary register-container">
+    <div class="register-box">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="text-center">Register</h3>
+            </div>
+            <div class="card-body ps-5 pe-5">
+                <div class="login-form">
+                    <div class="text-center pb-3">
+                        <!-- <img src="assets/images/logo.png" class="login-logo p-2" height="50px"> -->
+                    </div>
+                    <form [formGroup]="registerForm" (ngSubmit)="submitRegisterForm()">
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">Username</label>
+                            <input type="text" class="form-control" formControlName="userName" name="userName"
+                                id="userName"
+                                [ngClass]="!registerForm.controls['userName'].valid ?'is-invalid':'is-valid'"
+                                placeholder="Username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" formControlName="password" name="password"
+                                    id="password" placeholder="Password"
+                                    [ngClass]="!registerForm.controls['password'].valid ?'is-invalid':'is-valid'">
+                                <span class="input-group-text pointer" (click)="togglePasswordDisplay()">
+                                    <!-- <i id="eye-span" class="fa-solid fa-eye"></i> -->
+                                    {{toggleText()}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" formControlName="confirmPassword"
+                                    name="confirmPassword" id="confirmPassword" placeholder="Confirm Password"
+                                    [ngClass]="!registerForm.controls['confirmPassword'].valid ?'is-invalid':'is-valid'">
+                                <span class="input-group-text pointer" (click)="toggleConfirmPasswordDisplay()">
+                                    <!-- <i id="confirm-eye-span" class="fa-solid fa-eye"></i> -->
+                                    {{toggleConfirmText}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            @if (!displayLoading) {
+                            <button class="btn btn-dark" type="submit"
+                                [disabled]="!registerForm.valid">Register</button>
+                            }
+                            <!-- @else if (b > a) {
+                                                        {{a}} is less than {{b}}
+                                                      }  -->
+                            @else {
+                                <button class="btn btn-primary" type="button" disabled>
+                                    <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                                    <span role="status">Loading...</span>
+                                  </button>
+                            }
+                        </div>
+                        <div class="text-center pt-3">
+                            <span>
+                                <a [routerLink]="['/']">
+                                    <mat-icon style="line-height: inherit;" aria-hidden="false" aria-label="Example home icon"
+                                        fontIcon="home"></mat-icon>
+                                </a>
+                            </span>
+                            |
+                            <span>
+                                <a [routerLink]="['/auth','login']">Login</a>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

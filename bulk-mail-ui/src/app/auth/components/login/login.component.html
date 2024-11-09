@@ -1,0 +1,55 @@
+<div class="login-container bg-secondary row">
+    <div class="col-md-8 login-left me-0 pe-0">
+        <!-- <p>Login left</p> -->
+    </div>
+    <div class="col-md-4 bg-primary login-right me-0 pe-0">
+        <div class="login-form text-white">
+            <div class="text-center pb-3">
+                <!-- <img src="assets/images/logo.png" class="login-logo p-2" height="50px"> -->
+            </div>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="mb-3">
+                    <label for="userName" class="form-label">Username</label>
+                    <input type="text" class="form-control" formControlName="userName" name="userName" id="userName"
+                        [ngClass]="!loginForm.controls['userName'].valid ?'is-invalid':'is-valid'"
+                        placeholder="Username">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" formControlName="password" name="password"
+                            id="password" placeholder="Password"
+                            [ngClass]="!loginForm.controls['password'].valid ?'is-invalid':'is-valid'">
+                        <span class="input-group-text pointer" (click)="togglePasswordDisplay()">
+                            <!-- <i id="eye-span" class="fa-solid fa-eye"></i> -->
+                            {{toggleText()}}
+                        </span>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    @if (!displayLoading) {
+                    <button class="btn btn-secondary" type="submit" [disabled]="!loginForm.valid">Login</button>
+                    }
+                    @else {
+                    <button class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                        <span role="status">Loading...</span>
+                    </button>
+                    }
+                </div>
+                <div class="text-center pt-3">
+                    <span>
+                        <a class="text-white me-3" [routerLink]="['/']">
+                            <mat-icon style="line-height: inherit;" aria-hidden="false" aria-label="Example home icon"
+                                        fontIcon="home"></mat-icon>
+                        </a>
+                    </span>
+                    <span class="text-white">|</span>
+                    <span>
+                        <a class="text-white ms-3" [routerLink]="['/auth','register']">Register</a>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

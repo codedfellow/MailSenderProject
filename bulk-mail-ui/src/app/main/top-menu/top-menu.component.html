@@ -1,0 +1,74 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="#">MailManager</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">
+              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+            </a>
+          </li>
+          @if (!isLoggedIn()) {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/auth/login" routerLinkActive="active" ariaCurrentWhenActive="page">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/auth/register" routerLinkActive="active" ariaCurrentWhenActive="page">Register</a>
+            </li>
+          }
+          @if (isLoggedIn()) {
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Mail Menu
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" routerLink="/sent-mails">Sent Mails(Immediate)</a></li>
+                <li><a class="dropdown-item" href="#">Scheduled Mails</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" routerLink="/send-mail">Send Mail (Immediate)</a></li>
+                <li><a class="dropdown-item" href="#">Schedule Mail</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="javascript:undefined" ariaCurrentWhenActive="page" (click)="logOut()">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a href="javascript:void(0)" (click)="otherMenu._elementRef.nativeElement.click()" class="nav-link">
+                Other Menu
+                <!-- <button #otherMenu mat-icon-button [matMenuTriggerFor]="menu" style="line-height: inherit; height: inherit;padding: 0;margin: 0;" aria-label="Example icon-button with a menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button> -->
+              </a>
+                      
+            </li>
+            <li class="nav-item">
+              <button #otherMenu mat-icon-button [matMenuTriggerFor]="menu" style="line-height: inherit; height: inherit;padding: 0;margin: 0;" aria-label="Example icon-button with a menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                  <mat-icon class="text-info">person</mat-icon>
+                  <span>Profile</span>
+                </button>
+                <button mat-menu-item>
+                   <mat-icon>dialpad</mat-icon>
+                  <span>Support</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>notifications</mat-icon>
+                  <span>Notifications</span>
+                </button>
+              </mat-menu>
+            </li>
+          }
+        </ul>
+        <!-- <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form> -->
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,25 @@
+<div class="send-mail-container">
+    <div class="send-mail-header">
+        <h3 class="text-center">Send Mail</h3>
+    </div>
+    <form [formGroup]="mailForm">
+        <div class="send-mail-body">
+
+            <div class="mb-3">
+                <label for="mailSubject" class="form-label"><strong>Subject</strong></label>
+                <input type="text" class="form-control" id="mailSubject" formControlName="mailSubject" placeholder="Your mail Subject">
+            </div>
+            <h5>Message</h5>
+            <app-custom-ck-editor (ckeditorDataEmitter)="onEditorDataChange($event)"
+                (ckeditorEventEmitter)="onEditorChangeEvent($event)"></app-custom-ck-editor>
+            <p>
+                
+            </p>
+        </div>
+        <div class="send-mail-footer">
+            <p style="text-align: end;">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </p>
+        </div>
+    </form>
+</div>

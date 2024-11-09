@@ -1,0 +1,4 @@
+<!-- <ckeditor [editor]="Editor" [config]="config"  [data]="editorData"></ckeditor> -->
+    <!-- <ckeditor [(ngModel)]="editorData" [editor]="Editor"></ckeditor> -->
+    <!-- <ckeditor #editor [editor]="Editor"></ckeditor> -->
+    <ckeditor [(ngModel)]="model.editorData" [config]="config" [editor]="Editor" (change)="onChange($event)"></ckeditor>

@@ -1,9 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace DataAccessAndEntities.Entities
 {
@@ -17,9 +19,7 @@ namespace DataAccessAndEntities.Entities
         public DateTime? DeletedAt { get; set; }
         [BsonElement("deleted")]
         public bool Deleted { get; set; }
-        [BsonElement("created_by")]
-        public int CreatedBy { get; set; }
-        [BsonElement("modified_by")]
-        public int? ModifiedBy { get; set; }
+        public ObjectId? CreatedBy { get; set; }
+        public ObjectId? ModifiedBy { get; set; }
     }
 }

@@ -83,7 +83,7 @@ namespace Services
 
 
             await context.AddAsync(user,token);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(token);
 
             return true;
         }

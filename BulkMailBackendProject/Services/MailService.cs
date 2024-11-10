@@ -63,7 +63,7 @@ public class MailService : IMailService
 
             emailMessage.To.AddRange(receivers);
             emailMessage.Subject = model.mailSubject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = model.mailBody };
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = model.mailBody };
             // return emailMessage;
             Send(emailMessage);
             

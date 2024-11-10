@@ -41,7 +41,7 @@ namespace Services
             {
                 throw new NullReferenceException("No users found. Kindly register to login");
             }
-            var user = await context.User.FirstOrDefaultAsync(x => x.Email == model.Email);
+            var user = await context.User.FirstOrDefaultAsync(x => x.Email == model.Email,this.token);
 
             if (user is null) {
                 throw new NullReferenceException("User not found");

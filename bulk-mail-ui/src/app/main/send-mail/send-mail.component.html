@@ -7,13 +7,25 @@
 
             <div class="mb-3">
                 <label for="mailSubject" class="form-label"><strong>Subject</strong></label>
-                <input type="text" class="form-control" id="mailSubject" formControlName="mailSubject" placeholder="Your mail Subject">
+                <input type="text" class="form-control" id="mailSubject" formControlName="mailSubject"
+                    placeholder="Your mail Subject">
             </div>
+            <p>
+                <span class="recipient-item" *ngFor="let receipt of mailRecipients">{{receipt.emailAddress}}</span>
+            </p>
+            <form [formGroup]="mailReceiptForm" (ngSubmit)="addMailRecipient()">
+                <div class="recpt-form">
+                    <label for="staticEmail2" class="me-2" style="display: inline;">New Recipient</label>
+                    <input type="email" formControlName="mailRecipient" class="form-control me-2" style="display: inline;" id="staticEmail2">
+                    <button type="submit" [disabled]="mailReceiptForm.invalid" class="btn btn-primary">Add
+                        Recipient</button>
+                </div>
+            </form>
             <h5>Message</h5>
             <app-custom-ck-editor (ckeditorDataEmitter)="onEditorDataChange($event)"
                 (ckeditorEventEmitter)="onEditorChangeEvent($event)"></app-custom-ck-editor>
             <p>
-                
+
             </p>
         </div>
         <div class="send-mail-footer">

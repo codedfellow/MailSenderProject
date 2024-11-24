@@ -3,6 +3,9 @@ import { Component, inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MailRecipientsModel } from '../models/mail-recipients.model';
+import { MailService } from '../services/mail.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-send-mail',
@@ -13,6 +16,10 @@ import { MailRecipientsModel } from '../models/mail-recipients.model';
 })
 export class SendMailComponent {
   mailRecipients: MailRecipientsModel[] = [];
+  mailService = inject(MailService);
+  router = inject(Router);
+
+  displaySendMailLoading: boolean = false
 
   mailBody: string = "";
 
@@ -23,7 +30,8 @@ export class SendMailComponent {
   })
 
   mailReceiptForm: FormGroup = this.fb.group({
-    mailRecipient: ['',[Validators.required,Validators.email]]
+    // mailRecipient: ['',[Validators.required,Validators.email]]
+    mailRecipient: ['',[Validators.email]]
   })  
 
   onEditorDataChange(editorData: string){
@@ -50,5 +58,27 @@ export class SendMailComponent {
     }
     this.mailRecipients.push(newRecipient)
     this.mailReceiptForm.reset()
+  }
+
+  sendMail(){
+    let mailFormVal = this.mailForm.getRawValue();
+
+    let body: any = {
+      mailBody: this.mailBody,
+      mailSubject: mailFormVal.mailSubject,
+      receiversList: this.mailRecipients
+    }
+
+    this.displaySendMailLoading = true
+    this.mailService.sendMail(body).subscribe({
+      next: (res) => {
+        Swal.fire('',res.message,'success')
+        this.displaySendMailLoading = false
+        this.router.navigate([''])
+      },
+      error: (err) => {
+        this.displaySendMailLoading = false
+      }
+    })
   }
 }

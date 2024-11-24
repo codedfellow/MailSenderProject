@@ -2,7 +2,7 @@
     <div class="send-mail-header">
         <h3 class="text-center">Send Mail</h3>
     </div>
-    <form [formGroup]="mailForm">
+    <form [formGroup]="mailForm" (ngSubmit)="sendMail()">
         <div class="send-mail-body">
 
             <div class="mb-3">
@@ -11,12 +11,16 @@
                     placeholder="Your mail Subject">
             </div>
             <p>
-                <span class="recipient-item" *ngFor="let receipt of mailRecipients">{{receipt.emailAddress}}</span>
+                @for (item of mailRecipients; track item.emailAddress) {
+                <span class="recipient-item">{{item.emailAddress}}</span>
+                } @empty {
+                <p>No Recipients added yet</p>
+                }
             </p>
             <form [formGroup]="mailReceiptForm" (ngSubmit)="addMailRecipient()">
                 <div class="recpt-form">
                     <label for="staticEmail2" class="me-2" style="display: inline;">New Recipient</label>
-                    <input type="email" formControlName="mailRecipient" class="form-control me-2" style="display: inline;" id="staticEmail2">
+                    <input type="email" formControlName="mailRecipient" class="form-control me-2" style="display: inline;" id="staticEmail2" [ngClass]="(mailReceiptForm.controls['mailRecipient'].invalid && mailReceiptForm.controls['mailRecipient'].dirty) || (!mailRecipients.length && !mailReceiptForm.controls['mailRecipient'].value) ? 'is-invalid':'is-valid'">
                     <button type="submit" [disabled]="mailReceiptForm.invalid" class="btn btn-primary">Add
                         Recipient</button>
                 </div>
@@ -29,9 +33,17 @@
             </p>
         </div>
         <div class="send-mail-footer">
+            @if (!displaySendMailLoading) {
             <p style="text-align: end;">
                 <button type="submit" class="btn btn-primary">Send</button>
             </p>
+            }
+            @else {
+            <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                <span role="status">Loading...</span>
+            </button>
+            }
         </div>
     </form>
 </div>

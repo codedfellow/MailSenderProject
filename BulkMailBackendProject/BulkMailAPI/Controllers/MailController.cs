@@ -8,6 +8,7 @@ namespace BulkMailAPI.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class MailController : ControllerBase
 {
     private readonly IMailService _mailService;
@@ -21,10 +22,9 @@ public class MailController : ControllerBase
     
     [HttpPost]
     [Route("send-mail")]
-    [Authorize]
     public async Task<IActionResult> SendMail([FromBody] SendMailDto model)
     {
         var response = await _mailService.SendMail(model,_sessionInfo.UserId);
-        return Ok(new { token = response, message = "Mail sent successfully" });
+        return Ok(new {message = "Mail sent successfully" });
     }
 }

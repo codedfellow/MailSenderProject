@@ -14,13 +14,15 @@
                 @for (item of mailRecipients; track item.emailAddress) {
                 <span class="recipient-item">{{item.emailAddress}}</span>
                 } @empty {
-                <p>No Recipients added yet</p>
-                }
+            <p>No Recipients added yet</p>
+            }
             </p>
             <form [formGroup]="mailReceiptForm" (ngSubmit)="addMailRecipient()">
                 <div class="recpt-form">
                     <label for="staticEmail2" class="me-2" style="display: inline;">New Recipient</label>
-                    <input type="email" formControlName="mailRecipient" class="form-control me-2" style="display: inline;" id="staticEmail2" [ngClass]="(mailReceiptForm.controls['mailRecipient'].invalid && mailReceiptForm.controls['mailRecipient'].dirty) || (!mailRecipients.length && !mailReceiptForm.controls['mailRecipient'].value) ? 'is-invalid':'is-valid'">
+                    <input type="email" formControlName="mailRecipient" class="form-control me-2"
+                        style="display: inline;" id="staticEmail2"
+                        [ngClass]="(mailReceiptForm.controls['mailRecipient'].invalid && mailReceiptForm.controls['mailRecipient'].dirty) || (!mailRecipients.length && !mailReceiptForm.controls['mailRecipient'].value) ? 'is-invalid':'is-valid'">
                     <button type="submit" [disabled]="mailReceiptForm.invalid" class="btn btn-primary">Add
                         Recipient</button>
                 </div>
@@ -39,10 +41,12 @@
             </p>
             }
             @else {
-            <button class="btn btn-primary" type="button" disabled>
-                <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
-                <span role="status">Loading...</span>
-            </button>
+            <p style="text-align: end;">
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                    <span role="status">Loading...</span>
+                </button>
+            </p>
             }
         </div>
     </form>

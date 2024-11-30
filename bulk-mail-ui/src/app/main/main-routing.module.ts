@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
+import { authGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,12 +15,14 @@ const routes: Routes = [
       {
         path: 'sent-mails',
         // canActivate: [canActivateLoggedInAccess],
-        loadComponent: () => import('./sent-mails/sent-mails.component').then(mod => mod.SentMailsComponent)
+        loadComponent: () => import('./sent-mails/sent-mails.component').then(mod => mod.SentMailsComponent),
+        canActivate: [authGuard]
       },
       {
         path: 'send-mail',
         // canActivate: [canActivateLoggedInAccess],
-        loadComponent: () => import('./send-mail/send-mail.component').then(mod => mod.SendMailComponent)
+        loadComponent: () => import('./send-mail/send-mail.component').then(mod => mod.SendMailComponent),
+        canActivate: [authGuard]
       }
     ]
   }

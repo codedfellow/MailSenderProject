@@ -17,7 +17,9 @@ namespace DTOs.EmailLogDtos
         public string? Recipients { get; set; }
         public string? Body { get; set; }
         public EmailStatusEnum MailStatus { get; set; }
+        public EmailStatusEnum MailStatusString { get; set; }
         public MailTypeEnum MailType { get; set; }
-        public int? ScheduledMailId { get; set; }
+        public MailTypeEnum MailTypeString { get; set; }
+        public ObjectId? ScheduledMailId { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { MainRoutingModule } from '../main-routing.module';
 import { AuthService } from '../../auth/services/auth.service';
 
@@ -15,6 +15,7 @@ import { AuthService } from '../../auth/services/auth.service';
 export class TopMenuComponent {
 
   authService = inject(AuthService)
+  router = inject(Router);
 
   isLoggedIn(){
     return this.authService.isLoggedIn()
@@ -22,5 +23,6 @@ export class TopMenuComponent {
 
   logOut(){
     localStorage.removeItem('bulkmailtoken')
+    this.router.navigate(['/'])
   }
 }

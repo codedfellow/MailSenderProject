@@ -11,11 +11,14 @@
                     placeholder="Your mail Subject">
             </div>
             <p>
-                @for (item of mailRecipients; track item.emailAddress) {
-                <span class="recipient-item">{{item.emailAddress}}</span>
+                @for (item of mailRecipients; track item.emailAddress; let idx = $index) {
+                <span (dblclick)="removeRecipient(idx,$event)" class="recipient-item">{{item.emailAddress}}</span>
+                @if (idx === (mailRecipients.length - 1)) {
+                    <span class="text-danger">...Double click to remove recipient</span>
+                    }
                 } @empty {
-            <p>No Recipients added yet</p>
-            }
+                <span>No Recipients added yet</span>
+                }
             </p>
             <form [formGroup]="mailReceiptForm" (ngSubmit)="addMailRecipient()">
                 <div class="recpt-form">

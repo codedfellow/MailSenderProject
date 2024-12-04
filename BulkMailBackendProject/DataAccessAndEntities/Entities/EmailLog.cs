@@ -29,6 +29,6 @@ namespace DataAccessAndEntities.Entities
         [BsonElement("mail_type")]
         public MailTypeEnum MailType { get; set; }
         [BsonElement("scheduled_mail_id")]
-        public int? ScheduledMailId { get; set; }
+        public ObjectId? ScheduledMailId { get; set; }
     }
 }

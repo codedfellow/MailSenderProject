@@ -81,4 +81,11 @@ export class SendMailComponent {
       }
     })
   }
+
+  removeRecipient(mailIndex: number, event: any){
+    console.log('double clicked mail...',mailIndex,event)
+    event.preventDefault();
+
+    this.mailRecipients.splice(mailIndex);
+  }
 }

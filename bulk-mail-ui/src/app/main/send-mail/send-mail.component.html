@@ -10,7 +10,7 @@
                 <input type="text" class="form-control" id="mailSubject" formControlName="mailSubject"
                     placeholder="Your mail Subject">
             </div>
-            <p>
+            <p class="mail-list">
                 @for (item of mailRecipients; track item.emailAddress; let idx = $index) {
                 <span (dblclick)="removeRecipient(idx,$event)" class="recipient-item">{{item.emailAddress}}</span>
                 @if (idx === (mailRecipients.length - 1)) {

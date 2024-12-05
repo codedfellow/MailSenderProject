@@ -15,7 +15,13 @@
     width: 200px;
 }
 
+.mail-list{
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .recpt-form{
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
 }

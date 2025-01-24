@@ -1,6 +1,7 @@
 using DataAccessAndEntities.Entities;
 using DataAccessAndEntities.Enums;
 using DTOs.Configurations;
+using DTOs.EmailLogDtos;
 using DTOs.MailDtos;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
@@ -75,6 +76,26 @@ public class MailService : IMailService
         {
             throw;
         }
+    }
+
+    public async Task<List<EmailLogDto>> GetEmailLogs(ObjectId userId)
+    {
+        var sentMails = (from log in context.EmailLog
+            where log.CreatedBy == userId
+            select new EmailLogDto()
+            {
+                MailId = log.MailId,
+                Subject = log.Subject,
+                Sender = log.Sender,
+                Recipients = log.Recipients,
+                Body = log.Body,
+                MailStatus = log.MailStatus,
+                MailType = log.MailType,
+                ScheduledMailId = log.ScheduledMailId,
+            }).ToList();
+        
+        return sentMails;
+        //throw new NotImplementedException();
     }
 
     private void Send(MimeMessage mailMessage)

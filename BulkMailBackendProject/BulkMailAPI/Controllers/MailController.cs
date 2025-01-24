@@ -27,4 +27,12 @@ public class MailController : ControllerBase
         var response = await _mailService.SendMail(model,_sessionInfo.UserId);
         return Ok(new {message = "Mail sent successfully" });
     }
+    
+    [HttpGet]
+    [Route("get-email-log")]
+    public async Task<IActionResult> GetEmailLogs()
+    {
+        var response = await _mailService.GetEmailLogs(_sessionInfo.UserId);
+        return Ok(response);
+    }
 }

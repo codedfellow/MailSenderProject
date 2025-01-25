@@ -14,14 +14,14 @@ namespace DTOs.EmailLogDtos
         {
             return new EmailLogDto
             {
-                MailId = mail.MailId,
+                MailId = mail.MailId.ToString(),
                 Subject = mail.Subject,
                 Sender = mail.Sender,
                 Recipients = mail.Recipients,
                 Body = mail.Body,
                 MailStatus = mail.MailStatus,
                 MailType = mail.MailType,
-                ScheduledMailId = mail.ScheduledMailId,
+                ScheduledMailId = mail.ScheduledMailId.ToString(),
             };
         }
     }

@@ -8,11 +8,10 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-send-mail',
-  standalone: true,
-  imports: [CommonModule, SharedModule],
-  templateUrl: './send-mail.component.html',
-  styleUrl: './send-mail.component.scss'
+    selector: 'app-send-mail',
+    imports: [CommonModule, SharedModule],
+    templateUrl: './send-mail.component.html',
+    styleUrl: './send-mail.component.scss'
 })
 export class SendMailComponent {
   mailRecipients: MailRecipientsModel[] = [];

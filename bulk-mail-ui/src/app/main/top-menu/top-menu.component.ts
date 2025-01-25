@@ -6,11 +6,10 @@ import { MainRoutingModule } from '../main-routing.module';
 import { AuthService } from '../../auth/services/auth.service';
 
 @Component({
-  selector: 'app-top-menu',
-  standalone: true,
-  imports: [CommonModule,SharedModule,RouterLink,RouterLinkActive],
-  templateUrl: './top-menu.component.html',
-  styleUrl: './top-menu.component.scss'
+    selector: 'app-top-menu',
+    imports: [CommonModule, SharedModule, RouterLink, RouterLinkActive],
+    templateUrl: './top-menu.component.html',
+    styleUrl: './top-menu.component.scss'
 })
 export class TopMenuComponent {
 

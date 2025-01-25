@@ -11,5 +11,6 @@ namespace ServicesInterfaces
     {
         Task<bool> RegisterUser(UserRegistrationDto model);
         Task<string> Login(UserLoginDto model);
+        
     }
 }

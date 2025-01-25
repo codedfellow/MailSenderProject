@@ -6,11 +6,10 @@ import { FooterComponent } from '../footer/footer.component';
 import { RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-layout',
-  standalone: true,
-  imports: [CommonModule, SharedModule, FooterComponent,RouterOutlet, TopMenuComponent],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.scss'
+    selector: 'app-layout',
+    imports: [CommonModule, SharedModule, FooterComponent, RouterOutlet, TopMenuComponent],
+    templateUrl: './layout.component.html',
+    styleUrl: './layout.component.scss'
 })
 export class LayoutComponent {
 

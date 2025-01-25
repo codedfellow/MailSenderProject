@@ -8,11 +8,10 @@ import { AppConfig } from '../../../configurations/app-config';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [CommonModule,SharedModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+    selector: 'app-register',
+    imports: [CommonModule, SharedModule],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm: FormGroup = this.fb.group({

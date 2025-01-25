@@ -4,9 +4,10 @@ import { AccessibilityHelp, Alignment, Autoformat, AutoImage, Autosave, Base64Up
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 
 @Component({
-  selector: 'app-custom-ck-editor',
-  templateUrl: './custom-ck-editor.component.html',
-  styleUrl: './custom-ck-editor.component.scss'
+    selector: 'app-custom-ck-editor',
+    templateUrl: './custom-ck-editor.component.html',
+    styleUrl: './custom-ck-editor.component.scss',
+    standalone: false
 })
 export class CustomCkEditorComponent {
   public model = {

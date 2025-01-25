@@ -8,4 +8,5 @@ public interface IMailService
 {
     Task<bool> SendMail(SendMailDto model, ObjectId userId);
     Task<List<EmailLogDto>> GetEmailLogs(ObjectId userId);
+    Task<EmailLogDto> GetSingleMaiLog(ObjectId mailId);
 }

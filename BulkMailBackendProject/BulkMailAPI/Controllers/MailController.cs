@@ -2,6 +2,7 @@ using DTOs.Configurations;
 using DTOs.MailDtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using ServicesInterfaces;
 
 namespace BulkMailAPI.Controllers;
@@ -33,6 +34,15 @@ public class MailController : ControllerBase
     public async Task<IActionResult> GetEmailLogs()
     {
         var response = await _mailService.GetEmailLogs(_sessionInfo.UserId);
+        return Ok(response);
+    }
+    
+    [HttpGet]
+    [Route("get-single-mail-log/{mailId}")]
+    public async Task<IActionResult> GetSingleMaiLog([FromRoute]string mailId)
+    {
+        ObjectId mailObjectId = ObjectId.Parse(mailId);
+        var response = await _mailService.GetSingleMaiLog(mailObjectId);
         return Ok(response);
     }
 }

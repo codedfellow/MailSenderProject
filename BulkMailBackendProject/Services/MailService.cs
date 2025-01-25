@@ -101,7 +101,23 @@ public class MailService : IMailService
         
         return sentMails;
     }
-    
+
+    public async Task<EmailLogDto> GetSingleMaiLog(ObjectId mailId)
+    {
+        var mail = await context.EmailLog.FindAsync(mailId,token);
+
+        if (mail is null)
+        {
+            throw new ArgumentException("No mail found");
+        }
+
+        var mailResponse = mail.ConvertToUserDto();
+        mailResponse.MailStatusString = EnumsHelper.GetMailStatusString(mail.MailStatus);
+        mailResponse.MailTypeString = EnumsHelper.GetMailTypeString(mail.MailType);
+        
+        return mailResponse;
+    }
+
     private void Send(MimeMessage mailMessage)
     {
         using (var client = new SmtpClient())

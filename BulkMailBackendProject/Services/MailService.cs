@@ -97,7 +97,8 @@ public class MailService : IMailService
                 ScheduledMailId = log.ScheduledMailId.ToString(),
                 MailStatusString = mailStatusEnums.Where(x => x == log.MailStatus).Select(x => EnumsHelper.GetMailStatusString(x)).FirstOrDefault(),
                 MailTypeString = mailTypesEnum.Where(x => x == log.MailType).Select(x => EnumsHelper.GetMailTypeString(x)).FirstOrDefault(),
-            }).ToList();
+                CreatedAt = log.CreatedAt
+            }).OrderByDescending(x => x.CreatedAt).ToList();
         
         return sentMails;
     }

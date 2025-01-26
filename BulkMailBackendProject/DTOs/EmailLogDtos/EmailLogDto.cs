@@ -21,5 +21,6 @@ namespace DTOs.EmailLogDtos
         public MailTypeEnum MailType { get; set; }
         public string? MailTypeString { get; set; }
         public string? ScheduledMailId { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

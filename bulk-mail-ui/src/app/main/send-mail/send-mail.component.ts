@@ -14,10 +14,10 @@ import Swal from 'sweetalert2';
     styleUrl: './send-mail.component.scss'
 })
 export class SendMailComponent {
-  mailRecipients: MailRecipientsModel[] = [];
   mailService = inject(MailService);
   router = inject(Router);
 
+  mailRecipients: MailRecipientsModel[] = [];
   displaySendMailLoading: boolean = false
 
   mailBody: string = "";

@@ -12,7 +12,16 @@ export class MailService {
 
   sendMail(body: any) {
 
-    return this.http.post<any>(`${AppConfig.ApiUrl}api/Mail/send-mail`, body, { withCredentials: true }).pipe(
+    return this.http.post<any>(`${AppConfig.ApiUrl}api/Mail/send-mail`, body).pipe(
+      map(response => {
+        return response
+      }),
+      catchError(error => { throw error.error }))
+  }
+
+  getSentMails() {
+
+    return this.http.get<any>(`${AppConfig.ApiUrl}api/Mail/get-email-log`).pipe(
       map(response => {
         return response
       }),

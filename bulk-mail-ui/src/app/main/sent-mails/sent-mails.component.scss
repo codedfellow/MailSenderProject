@@ -1,3 +1,14 @@
 .sent-mails-container{
     min-height: 80vh;
 }
+
+#mail-body-text {
+    height: 1.2rem;
+    // background-color: red;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.body-td{
+    max-width: 60vw;
+}

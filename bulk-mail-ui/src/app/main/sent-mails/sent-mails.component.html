@@ -27,9 +27,9 @@
                                <td>{{item.mailTypeString}}</td>
                                <td>{{item.mailStatusString}}</td>
                                <td>
-                                <button class="btn btn-secondary">
+                                <a class="btn btn-secondary" [routerLink]="['/','mail-detail',item.mailId]">
                                     View Mail
-                                </button>
+                                </a>
                                </td>
                             </tr>
                         } @empty {

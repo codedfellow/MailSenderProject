@@ -23,6 +23,12 @@ const routes: Routes = [
         // canActivate: [canActivateLoggedInAccess],
         loadComponent: () => import('./send-mail/send-mail.component').then(mod => mod.SendMailComponent),
         canActivate: [authGuard]
+      },
+      {
+        path: 'mail-detail/:mailId',
+        // canActivate: [canActivateLoggedInAccess],
+        loadComponent: () => import('./mail-detail/mail-detail.component').then(mod => mod.MailDetailComponent),
+        canActivate: [authGuard]
       }
     ]
   }

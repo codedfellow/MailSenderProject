@@ -3,10 +3,12 @@
 }
 
 #mail-body-text {
-    height: 1.2rem;
-    // background-color: red;
+    height: 1.3rem;
+    font-size: 1rem;
+    //background-color: red;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1.3rem;
 }
 
 .body-td{

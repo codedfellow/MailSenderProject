@@ -6,11 +6,12 @@ export interface MailLogModel{
     subject?: string,
     sender?: string,
     recipients: string,
-    recipientsArray: string,
+    recipientsArray: string[],
     body: string,
     mailStatus: EmailStatusEnum,
     mailStatusString: string,
     mailType: MailTypeEnum,
     mailTypeString?: string,
     sheduledMailId?: string
+    createdAt?: Date
 }

@@ -20,8 +20,15 @@ export class MailService {
   }
 
   getSentMails() {
-
     return this.http.get<any>(`${AppConfig.ApiUrl}api/Mail/get-email-log`).pipe(
+      map(response => {
+        return response
+      }),
+      catchError(error => { throw error.error }))
+  }
+
+  getSingleMailDetail(mailId: string) {
+    return this.http.get<any>(`${AppConfig.ApiUrl}api/Mail/get-single-mail-log/${mailId}`).pipe(
       map(response => {
         return response
       }),

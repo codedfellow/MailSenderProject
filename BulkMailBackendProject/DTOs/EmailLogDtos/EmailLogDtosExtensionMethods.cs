@@ -22,6 +22,7 @@ namespace DTOs.EmailLogDtos
                 MailStatus = mail.MailStatus,
                 MailType = mail.MailType,
                 ScheduledMailId = mail.ScheduledMailId.ToString(),
+                CreatedAt = mail.CreatedAt
             };
         }
     }

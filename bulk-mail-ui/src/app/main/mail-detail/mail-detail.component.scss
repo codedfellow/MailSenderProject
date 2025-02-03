@@ -1,3 +1,22 @@
 .mail-detail-container{
     min-height: 80vh;
 }
+
+.recipient-item{
+    background-color: #13101c;
+    height: 40px;
+    color: white;
+    padding: 10px 20px;
+    margin: 3px 5px;
+    border-radius: 20px;
+}
+
+.recpt-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.recpt-header{
+    text-decoration: underline;
+}

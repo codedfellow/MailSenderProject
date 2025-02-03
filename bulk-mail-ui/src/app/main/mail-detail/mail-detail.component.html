@@ -1,3 +1,23 @@
 <div class="mail-detail-container">
-    <p>mail-detail works!</p>
+    @if (mailDetail) {
+    <div class="card">
+        <div class="card-header bg-primary text-white text-center">
+            <h4>Subject: {{mailDetail.subject}}</h4>
+        </div>
+        <div class="card-body">
+            <p class="recpt-header">Recipients</p>
+            <p class="recpt-list">
+                @for (item of mailDetail.recipientsArray; track item; let idx = $index) {
+                <span class="recipient-item">{{item}}</span>
+                }
+            </p>
+            <hr>
+            <p>{{mailDetail.mailStatusString}} <span class="text-secondary">|</span> {{mailDetail.mailTypeString}}</p>
+            <hr>
+            <div [innerHTML]="mailDetail.body"></div>
+            <hr>
+            <p>Sent: {{mailDetail.createdAt | date:'medium' }}</p>
+        </div>
+    </div>
+    }
 </div>

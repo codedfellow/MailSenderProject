@@ -8,9 +8,8 @@ namespace DataAccessAndEntities.Enums
 {
     public enum ScheduledMailStatus
     {
-        Pending = 1,
-        Active = 2,
-        Ended = 3,
-        Cancelled = 4
+        Active = 1,
+        Ended = 2,
+        Cancelled = 3
     }
 }

@@ -69,6 +69,7 @@ namespace BulkMailAPI.Extensions
             
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IMailSchedulingService, MailSchedulingService>();
             services.AddScoped<SessionInfo>();
             
             //Middleare services

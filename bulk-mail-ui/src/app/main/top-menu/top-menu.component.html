@@ -26,10 +26,10 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" routerLink="/sent-mails">Sent Mails</a></li>
-                <li><a class="dropdown-item" href="#">Scheduled Mails</a></li>
+                <li><a class="dropdown-item" routerLink="/scheduled-mails">Scheduled Mails</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" routerLink="/send-mail">Send Mail (Immediate)</a></li>
-                <li><a class="dropdown-item" href="#">Schedule Mail</a></li>
+                <li><a class="dropdown-item" [routerLink]="['/','schedule-mail']">Schedule Mail</a></li>
               </ul>
             </li>
             <li class="nav-item">

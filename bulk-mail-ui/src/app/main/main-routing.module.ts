@@ -29,7 +29,19 @@ const routes: Routes = [
         // canActivate: [canActivateLoggedInAccess],
         loadComponent: () => import('./mail-detail/mail-detail.component').then(mod => mod.MailDetailComponent),
         canActivate: [authGuard]
-      }
+      },
+      {
+        path: 'scheduled-mails',
+        // canActivate: [canActivateLoggedInAccess],
+        loadComponent: () => import('./scheduled-mails/scheduled-mails.component').then(mod => mod.ScheduledMailsComponent),
+        canActivate: [authGuard]
+      },
+      {
+        path: 'schedule-mail',
+        // canActivate: [canActivateLoggedInAccess],
+        loadComponent: () => import('./schedule-mail/schedule-mail.component').then(mod => mod.ScheduleMailComponent),
+        canActivate: [authGuard]
+      },
     ]
   }
 ];

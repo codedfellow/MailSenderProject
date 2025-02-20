@@ -27,4 +27,12 @@ public class MailSchedulingController : Controller
         var response = await _mailSchedulingService.ScheduleMail(model, _sessionInfo.UserId);
         return Ok(new { message = "Mail scheduled successfully." });
     }
+
+    [HttpGet]
+    [Route("scheduled-mails")]
+    public async Task<IActionResult> GetScheduledMails()
+    {
+        var response = await _mailSchedulingService.GetScheduledMails(_sessionInfo.UserId);
+        return Ok(response);
+    }
 }

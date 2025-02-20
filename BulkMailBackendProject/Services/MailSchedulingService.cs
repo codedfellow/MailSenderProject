@@ -1,6 +1,7 @@
 using DataAccessAndEntities.Entities;
 using DataAccessAndEntities.Enums;
 using DTOs.ScheduledMailsDto;
+using Helpers;
 using MongoDB.Bson;
 using ServicesInterfaces;
 
@@ -49,5 +50,22 @@ public class MailSchedulingService : IMailSchedulingService
         await context.SaveChangesAsync(token);
         
         return true;
+    }
+
+    public async Task<List<ScheduledMailDto>> GetScheduledMails(ObjectId userId)
+    {
+        var allScheduledMails = context.ScheduledMail.Where(x => x.CreatedBy == userId).ToList();
+        
+        List<ScheduledMailDto> scheduledMailsResponse = new List<ScheduledMailDto>();
+
+        for (int i = 0; i < allScheduledMails.Count; i++)
+        {
+            var currentMail = allScheduledMails[i];
+            var nextToAdd = currentMail.ConvertToUserDto();
+            nextToAdd.SchduleStatusString = EnumsHelper.GetScheduleStatusString(nextToAdd.ScheduleStatus);
+            scheduledMailsResponse.Add(nextToAdd);
+        }
+        
+        return scheduledMailsResponse;
     }
 }

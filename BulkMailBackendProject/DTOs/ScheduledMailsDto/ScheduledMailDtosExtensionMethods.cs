@@ -14,7 +14,7 @@ namespace DTOs.ScheduledMailsDto
         {
             return new ScheduledMailDto
             {
-                ScheduledMailId = mail.ScheduledMailId,
+                ScheduledMailId = mail.ScheduledMailId.ToString(),
                 Subject = mail.Subject,
                 Sender = mail.Sender,
                 Recipients = mail.Recipients,

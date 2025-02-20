@@ -10,7 +10,7 @@ namespace DTOs.ScheduledMailsDto
 {
     public record ScheduledMailDto
     {
-        public ObjectId ScheduledMailId { get; set; }
+        public string ScheduledMailId { get; set; }
         public string? Subject { get; set; }
         public string? Sender { get; set; }
         public string? Recipients { get; set; }
@@ -20,5 +20,9 @@ namespace DTOs.ScheduledMailsDto
         public DateTime StartDateTime { get; set; }
         public bool IsContinuous { get; set; }
         public ScheduledMailStatus ScheduleStatus { get; set; }
+        public string? SchduleStatusString {
+            get;
+            set;
+        }
     }
 }

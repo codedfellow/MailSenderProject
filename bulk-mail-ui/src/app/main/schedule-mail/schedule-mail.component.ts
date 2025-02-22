@@ -79,7 +79,7 @@ export class ScheduleMailComponent {
       isContinuous: scheduleMailFormVal.isContinuous,
       startDateTime: scheduleMailFormVal.startDate,
       endDate: scheduleMailFormVal.endDate,
-      frequency: scheduleMailFormVal.frequency
+      frequency: Number(scheduleMailFormVal.frequency)
     }
 
     this.displayScheduleMailLoading = true

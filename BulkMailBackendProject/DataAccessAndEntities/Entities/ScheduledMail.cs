@@ -34,5 +34,7 @@ namespace DataAccessAndEntities.Entities
         public bool IsContinuous { get; set; }
         [BsonElement("schedule_status")]
         public ScheduledMailStatus ScheduleStatus { get; set; }
+        [BsonElement("frequency")]
+        public MailFrequencyEnum Frequency { get; set; }
     }
 }

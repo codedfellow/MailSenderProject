@@ -24,5 +24,7 @@ namespace DTOs.ScheduledMailsDto
             get;
             set;
         }
+        public MailFrequencyEnum Frequency { get; set; }
+        public string? FrequencyString { get; set; }
     }
 }

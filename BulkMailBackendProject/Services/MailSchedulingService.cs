@@ -29,7 +29,7 @@ public class MailSchedulingService : IMailSchedulingService
             throw new Exception("User not found");
         }
 
-        string receipients = string.Join(";",model.receiversList.Select(x => x.emailAddress));
+        string receipients = string.Join(";",model.ReceiversList.Select(x => x.emailAddress));
         
         var newScheduledMail = new ScheduledMail()
         {
@@ -42,6 +42,7 @@ public class MailSchedulingService : IMailSchedulingService
             IsContinuous = model.IsContinuous,
             CreatedAt = DateTime.Now,
             ScheduleStatus = ScheduledMailStatus.Active,
+            Frequency = model.Frequency,
             EndDate = model.EndDate,
             CreatedBy = userId
         };
@@ -63,6 +64,7 @@ public class MailSchedulingService : IMailSchedulingService
             var currentMail = allScheduledMails[i];
             var nextToAdd = currentMail.ConvertToUserDto();
             nextToAdd.SchduleStatusString = EnumsHelper.GetScheduleStatusString(nextToAdd.ScheduleStatus);
+            nextToAdd.FrequencyString = EnumsHelper.GetScheduleMailFrequencyString(nextToAdd.Frequency);
             scheduledMailsResponse.Add(nextToAdd);
         }
         

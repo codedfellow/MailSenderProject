@@ -41,4 +41,17 @@ public static class EnumsHelper
 
         return returnVal;
     }
+    
+    public static String GetScheduleMailFrequencyString(MailFrequencyEnum frequency)
+    {
+        string returnVal = frequency switch
+        {
+            MailFrequencyEnum.Daily => nameof(MailFrequencyEnum.Daily),
+            MailFrequencyEnum.Weekly => nameof(MailFrequencyEnum.Weekly),
+            MailFrequencyEnum.Monthly => nameof(MailFrequencyEnum.Monthly),
+            _ => ""
+        };
+
+        return returnVal;
+    }
 }

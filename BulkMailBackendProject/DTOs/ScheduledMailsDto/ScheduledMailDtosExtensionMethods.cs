@@ -24,6 +24,7 @@ namespace DTOs.ScheduledMailsDto
                 StartDateTime = mail.StartDateTime,
                 IsContinuous = mail.IsContinuous,
                 ScheduleStatus = mail.ScheduleStatus,
+                Frequency = mail.Frequency,
             };
         }
     }

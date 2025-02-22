@@ -1,3 +1,82 @@
-<div class="schedule-mail-container">
-    <p>schedule-mail works!</p>
+<div class="send-mail-container">
+    <div class="send-mail-header">
+        <h3 class="text-center">Schedule Mail</h3>
+    </div>
+    <form [formGroup]="scheduleMailForm" (ngSubmit)="scheduleMail()">
+        <div class="send-mail-body">
+            <div class="mb-3 row">
+                <div class="col">
+                    <label for="startDate" class="form-label"><strong>Start Date</strong></label>
+                    <input type="datetime-local" class="form-control" id="startDate" formControlName="startDate">
+                </div>
+                <div class="col">
+                    <label for="endDate" class="form-label"><strong>End Date</strong></label>
+                    <input type="date" class="form-control" id="endDate" formControlName="endDate">
+                </div>
+                <div class="col">
+                    <label for="frequency" class="form-label"><strong>Repeat Frequency</strong></label>
+                    <select class="form-select" formControlName="frequency">
+                        @for (item of mailFrequency; track item.id; let idx = $index) {
+                        <option [value]="item.id">{{item.name}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+                    <br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" formControlName="isContinuous" id="flexCheckDefault" (change)="changeIsContinuous()">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Is Continuous
+                        </label>
+                      </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="mailSubject" class="form-label"><strong>Subject</strong></label>
+                <input type="text" class="form-control" id="mailSubject" formControlName="mailSubject"
+                    placeholder="Your mail Subject">
+            </div>
+            <p class="mail-list">
+                @for (item of mailRecipients; track item.emailAddress; let idx = $index) {
+                <span (dblclick)="removeRecipient(idx,$event)" class="recipient-item">{{item.emailAddress}}</span>
+                @if (idx === (mailRecipients.length - 1)) {
+                    <span class="text-danger">...Double click to remove recipient</span>
+                    }
+                } @empty {
+                <span>No Recipients added yet</span>
+                }
+            </p>
+            <form [formGroup]="mailReceiptForm" (ngSubmit)="addMailRecipient()">
+                <div class="recpt-form">
+                    <label for="staticEmail2" class="me-2" style="display: inline;">New Recipient</label>
+                    <input type="email" formControlName="mailRecipient" class="form-control me-2"
+                        style="display: inline;" id="staticEmail2"
+                        [ngClass]="(mailReceiptForm.controls['mailRecipient'].invalid && mailReceiptForm.controls['mailRecipient'].dirty) || (!mailRecipients.length && !mailReceiptForm.controls['mailRecipient'].value) ? 'is-invalid':'is-valid'">
+                    <button type="submit" [disabled]="mailReceiptForm.invalid" class="btn btn-primary">Add
+                        Recipient</button>
+                </div>
+            </form>
+            <h5>Message</h5>
+            <app-custom-ck-editor (ckeditorDataEmitter)="onEditorDataChange($event)"
+                (ckeditorEventEmitter)="onEditorChangeEvent($event)"></app-custom-ck-editor>
+            <p>
+
+            </p>
+        </div>
+        <div class="send-mail-footer">
+            @if (!displayScheduleMailLoading) {
+            <p style="text-align: end;">
+                <button type="submit" class="btn btn-primary">Schedule</button>
+            </p>
+            }
+            @else {
+            <p style="text-align: end;">
+                <button class="btn btn-primary" type="button" disabled>
+                    <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+                    <span role="status">Loading...</span>
+                </button>
+            </p>
+            }
+        </div>
+    </form>
 </div>

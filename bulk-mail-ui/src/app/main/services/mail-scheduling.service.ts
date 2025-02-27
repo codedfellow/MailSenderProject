@@ -14,4 +14,12 @@ export class MailSchedulingService {
       map(response => response),
       catchError(error => { throw error.error }))
   }
+
+  getScheduledMails() {
+    return this.http.get<any>(`${AppConfig.ApiUrl}api/MailScheduling/scheduled-mails`).pipe(
+      map(response => {
+        return response
+      }),
+      catchError(error => { throw error.error }))
+  }
 }

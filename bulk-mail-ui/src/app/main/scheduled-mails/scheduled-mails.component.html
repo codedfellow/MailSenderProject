@@ -1,3 +1,50 @@
 <div class="scheduled-mails-container">
-    <p>scheduled-mails works!</p>
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3 class="text-center">Scheduled Mails</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th style="max-width: 30px;"></th>
+                            <th>Subject</th>
+                            <th>Body</th>
+                            <th>Status</th>
+                            <th>Frequency</th>
+                            <th>Next Schedule Date</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of scheduledMails; track item.scheduledMailId; let idx = $index) {
+                        <tr>
+                            <td>{{ idx + 1}}</td>
+                            <td>{{item.subject}}</td>
+                            <td class="body-td">
+                                <div [innerHTML]="item.body" id="mail-body-text"></div>
+                            </td>
+                            <td>{{item.schduleStatusString}}</td>
+                            <td>{{item.frequencyString}}</td>
+                            <td>{{item.nextMailDateTime | date:'medium'}}</td>
+                            <td>{{item.startDateTime | date:'medium'}}</td>
+                            <td>{{item.endDate | date:'medium'}}</td>
+                            <td>
+                                <!-- <a class="btn btn-secondary" [routerLink]="['/','mail-detail',item.mailId]">
+                                    View Mail
+                                </a> -->
+                            </td>
+                        </tr>
+                        } @empty {
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
 </div>

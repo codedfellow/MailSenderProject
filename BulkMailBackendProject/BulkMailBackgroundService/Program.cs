@@ -1,14 +1,28 @@
+using BulkMailBackgroundService.Extensions;
+
 namespace BulkMailBackgroundService
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
-            var builder = Host.CreateApplicationBuilder(args);
-            builder.Services.AddHostedService<Worker>();
+            var builder = Host.CreateDefaultBuilder(args);
+            using var host = Host.CreateDefaultBuilder(args)
+                .ConfigureLogging((hostContext, loggingBuilder) =>
+                {
+                    loggingBuilder.ClearProviders();
+                    loggingBuilder.AddConsole();
+                }).ConfigureServices((hostContext, services) =>
+                {
+                    var serviceProvider = services.BuildServiceProvider();
+                    var config = serviceProvider.GetRequiredService<IConfiguration>();
+                    services.AddServices(config);
+                })
+                .Build();
 
-            var host = builder.Build();
-            host.Run();
+            await host.StartAsync();
+
+            await host.WaitForShutdownAsync();
         }
     }
 }

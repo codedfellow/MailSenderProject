@@ -74,6 +74,7 @@ namespace BulkMailAPI.Extensions
             
             //Middleare services
             services.AddTransient<TokenMiddleware>();
+            services.AddTransient<ExceptionMiddleware>();
             
             services.AddTransient<CancellationTokenSource>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

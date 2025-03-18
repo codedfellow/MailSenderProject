@@ -4,6 +4,7 @@ using MailKit.Net.Smtp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using Exception = System.Exception;
 
 namespace BulkMailBackgroundService;
 
@@ -37,21 +38,31 @@ internal class ScopedProcessingService : IScopedProcessingService
 
     public async Task SendMails(CancellationToken stoppingToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        try
         {
-            executionCount++;
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                executionCount++;
 
-            _logger.LogInformation(
-                "Scoped Processing Service is working. Count: {Count}", executionCount);
+                _logger.LogInformation(
+                    "Scoped Processing Service is working. Count: {Count}", executionCount);
             
-            var sentMais = await context.EmailLog.ToListAsync();
-            var numberOfSentMails = sentMais.Count;
+                var sentMais = await context.EmailLog.ToListAsync();
+                var numberOfSentMails = sentMais.Count;
         
-            //_logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
+                //_logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
         
-            _logger.LogInformation($"{numberOfSentMails} mails sent.");
+                _logger.LogInformation("\n");
+                _logger.LogInformation($"{numberOfSentMails} mails sent.");
 
-            await Task.Delay(10000, stoppingToken);
+                await Task.Delay(10000, stoppingToken);
+            }
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("\n");
+            _logger.LogError(e,$"{e.GetBaseException().Message}");
+            throw;
         }
     }
     

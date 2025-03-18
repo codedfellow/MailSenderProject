@@ -1,4 +1,5 @@
 using BulkMailBackgroundService.Extensions;
+using Serilog;
 
 namespace BulkMailBackgroundService
 {
@@ -6,23 +7,38 @@ namespace BulkMailBackgroundService
     {
         public async static Task Main(string[] args)
         {
-            var builder = Host.CreateDefaultBuilder(args);
-            using var host = Host.CreateDefaultBuilder(args)
-                .ConfigureLogging((hostContext, loggingBuilder) =>
-                {
-                    loggingBuilder.ClearProviders();
-                    loggingBuilder.AddConsole();
-                }).ConfigureServices((hostContext, services) =>
-                {
-                    var serviceProvider = services.BuildServiceProvider();
-                    var config = serviceProvider.GetRequiredService<IConfiguration>();
-                    services.AddServices(config);
-                })
-                .Build();
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.File($"Logs/log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
 
-            await host.StartAsync();
+            try
+            {
+                var builder = Host.CreateDefaultBuilder(args);
+                using var host = Host.CreateDefaultBuilder(args)
+                    .ConfigureLogging((hostContext, loggingBuilder) =>
+                    {
+                        loggingBuilder.ClearProviders();
+                        loggingBuilder.AddSerilog(dispose: true);
+                        //loggingBuilder.ClearProviders();
+                        //loggingBuilder.AddConsole();
+                    }).ConfigureServices((hostContext, services) =>
+                    {
+                        var serviceProvider = services.BuildServiceProvider();
+                        var config = serviceProvider.GetRequiredService<IConfiguration>();
+                        services.AddServices(config);
+                    })
+                    .Build();
 
-            await host.WaitForShutdownAsync();
+                await host.StartAsync();
+
+                await host.WaitForShutdownAsync();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.GetBaseException().Message);
+                throw;
+            }
         }
     }
 }

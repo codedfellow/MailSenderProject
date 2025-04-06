@@ -4,12 +4,13 @@ using DTOs.Configurations;
 using DTOs.EmailLogDtos;
 using DTOs.MailDtos;
 using Helpers;
+using MailKit;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
-using ServicesInterfaces;
 //using MailKit.Net.Smtp;
 using MimeKit;
+using IMailService = ServicesInterfaces.IMailService;
 
 namespace Services;
 
@@ -67,7 +68,7 @@ public class MailService : IMailService
             emailMessage.Subject = model.mailSubject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = model.mailBody };
             // return emailMessage;
-            Send(emailMessage);
+            await Send(emailMessage);
             
             await context.SaveChangesAsync(token);
 
@@ -119,25 +120,25 @@ public class MailService : IMailService
         return mailResponse;
     }
 
-    private void Send(MimeMessage mailMessage)
+    private async Task Send(MimeMessage mailMessage)
     {
-        using (var client = new SmtpClient())
+        using (var client = new SmtpClient(new ProtocolLogger(Console.OpenStandardOutput())))
         {
             try
             {
-                client.Connect(_emailConfig.SmtpServer, _emailConfig.Port, false,token);
+                await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false,token);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
-                client.Authenticate(_emailConfig.UserName, _emailConfig.Password,token);
-                client.Send(mailMessage);
+                await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password,token);
+                await client.SendAsync(mailMessage,token);
             }
-            catch
+            catch(Exception ex)
             {
                 //log an error message or throw an exception or both.
                 throw;
             }
             finally
             {
-                client.Disconnect(true,token);
+                await client.DisconnectAsync(true,token);
             }
         }
     }

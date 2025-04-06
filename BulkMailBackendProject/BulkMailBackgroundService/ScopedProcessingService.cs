@@ -114,11 +114,19 @@ internal class ScopedProcessingService : IScopedProcessingService
             // return emailMessage;
             await Send(emailMessage, client);   
 
+            // DateTime nextMailDateTime = scheduledMail.Frequency switch
+            // {
+            //     MailFrequencyEnum.Daily => scheduledMail.NextMailDateTime.AddDays(1),
+            //     MailFrequencyEnum.Weekly => scheduledMail.NextMailDateTime.AddDays(7),
+            //     MailFrequencyEnum.Monthly => scheduledMail.NextMailDateTime.AddMonths(1),
+            //     _ => throw new Exception("Next mail date could'nt be calculated")
+            // };
+            
             DateTime nextMailDateTime = scheduledMail.Frequency switch
             {
-                MailFrequencyEnum.Daily => scheduledMail.NextMailDateTime.AddDays(1),
-                MailFrequencyEnum.Weekly => scheduledMail.NextMailDateTime.AddDays(7),
-                MailFrequencyEnum.Monthly => scheduledMail.NextMailDateTime.AddMonths(1),
+                MailFrequencyEnum.Daily => DateTime.Now.AddDays(1),
+                MailFrequencyEnum.Weekly => DateTime.Now.AddDays(7),
+                MailFrequencyEnum.Monthly => DateTime.Now.AddMonths(1),
                 _ => throw new Exception("Next mail date could'nt be calculated")
             };
 

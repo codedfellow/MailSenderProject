@@ -6,10 +6,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Exception = System.Exception;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace BulkMailBackgroundService;
 
 #region snippet1
+
 internal interface IScopedProcessingService
 {
     Task SendMails(CancellationToken stoppingToken);
@@ -48,36 +50,28 @@ internal class ScopedProcessingService : IScopedProcessingService
                 _logger.LogInformation("Scoped Processing Service is runnning...", executionCount);
 
                 var pastScheduledMails = await context.ScheduledMail.Where(x =>
-                    x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime < DateTime.Now).ToListAsync();
-                
+                        x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime.Date < DateTime.Now.Date)
+                    .ToListAsync();
+
                 var todayScheduledMails = await context.ScheduledMail.Where(x =>
-                    x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime.Date == DateTime.Now.Date).ToListAsync();
-                
+                        x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime.Date == DateTime.Now.Date)
+                    .ToListAsync();
+
                 var allMails = pastScheduledMails.Union(todayScheduledMails);
                 int numberOfMails = allMails.Count();
-        
+
                 //_logger.LogInformation("Timed Hosted Service is working. Count: {Count}", count);
                 List<Task> tasks = new List<Task>();
-                
-                using (var client = new SmtpClient())
-                {
-                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false,token);
-                    client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password,token);
-                    
-                    //allMails.Select(async (mail) => SendScheduledMail(mail, client));
 
-                    // await Parallel.ForEachAsync(allMails, async (mailToSend, token) =>
-                    // {
-                    //     await SendScheduledMail(mailToSend, client);
-                    // });
+                //allMails.Select(async (mail) => SendScheduledMail(mail, client));
 
-                    foreach(var mailToSend in allMails)
-                    {
-                        await SendScheduledMail(mailToSend, client);
-                    }
-                }
-        
+                await Parallel.ForEachAsync(allMails,
+                    async (mailToSend, token) => { await SendScheduledMail(mailToSend); });
+
+                // foreach(var mailToSend in allMails)
+                // {
+                //     await SendScheduledMail(mailToSend);
+                // }
                 _logger.LogInformation("\n");
                 _logger.LogInformation($"mails sent.");
 
@@ -87,84 +81,91 @@ internal class ScopedProcessingService : IScopedProcessingService
         catch (Exception e)
         {
             _logger.LogError("\n");
-            _logger.LogError(e,$"{e.GetBaseException().Message}");
+            _logger.LogError(e, $"{e.GetBaseException().Message}");
             throw;
         }
     }
 
-    private async Task SendScheduledMail(ScheduledMail scheduledMail, SmtpClient client)
+    private async Task SendScheduledMail(ScheduledMail scheduledMail)
+    {
+        using (var client = new SmtpClient())
+        {
+            await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false, token);
+            client.AuthenticationMechanisms.Remove("XOAUTH2");
+            await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password, token);
+
+            try
+            {
+                var emailMessage = new MimeMessage();
+                emailMessage.From.Add(new MailboxAddress("noreply@elvisaghaulor.com", "noreply@elvisaghaulor.com"));
+
+                string[] recipients = scheduledMail.Recipients.Split(";");
+
+                List<MailboxAddress> receivers = new List<MailboxAddress>();
+                foreach (var receiver in recipients)
+                {
+                    MailboxAddress receiverMail = new MailboxAddress(receiver, receiver);
+                    receivers.Add(receiverMail);
+                }
+
+                emailMessage.To.AddRange(receivers);
+                emailMessage.Subject = scheduledMail.Subject;
+                emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = scheduledMail.Body };
+                // return emailMessage;
+                await Send(emailMessage, client);
+
+                // DateTime nextMailDateTime = scheduledMail.Frequency switch
+                // {
+                //     MailFrequencyEnum.Daily => scheduledMail.NextMailDateTime.AddDays(1),
+                //     MailFrequencyEnum.Weekly => scheduledMail.NextMailDateTime.AddDays(7),
+                //     MailFrequencyEnum.Monthly => scheduledMail.NextMailDateTime.AddMonths(1),
+                //     _ => throw new Exception("Next mail date could'nt be calculated")
+                // };
+
+                DateTime nextMailDateTime = scheduledMail.Frequency switch
+                {
+                    MailFrequencyEnum.Daily => DateTime.Now.AddDays(1),
+                    MailFrequencyEnum.Weekly => DateTime.Now.AddDays(7),
+                    MailFrequencyEnum.Monthly => DateTime.Now.AddMonths(1),
+                    _ => throw new Exception("Next mail date could'nt be calculated")
+                };
+
+                scheduledMail.NextMailDateTime = nextMailDateTime;
+
+                if (scheduledMail.EndDate.HasValue && scheduledMail.EndDate.Value.Date < nextMailDateTime.Date)
+                {
+                    scheduledMail.ScheduleStatus = ScheduledMailStatus.Ended;
+                }
+
+                await context.SaveChangesAsync(token);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("\n");
+                _logger.LogError(e,
+                    $"Send Scheduled Mail {scheduledMail.ScheduledMailId} failure... {e.GetBaseException().Message}");
+                //throw;
+            }
+        }
+    }
+
+    private async Task Send(MimeMessage mailMessage, SmtpClient client)
     {
         try
         {
-            var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("noreply@elvisaghaulor.com", "noreply@elvisaghaulor.com"));
-
-            string[] recipients = scheduledMail.Recipients.Split(";");
-            
-            List<MailboxAddress> receivers = new List<MailboxAddress>();
-            foreach (var receiver in recipients)
-            {
-                MailboxAddress receiverMail = new MailboxAddress(receiver, receiver);
-                receivers.Add(receiverMail);
-            }
-            
-            emailMessage.To.AddRange(receivers);
-            emailMessage.Subject = scheduledMail.Subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = scheduledMail.Body };
-            // return emailMessage;
-            await Send(emailMessage, client);   
-
-            // DateTime nextMailDateTime = scheduledMail.Frequency switch
-            // {
-            //     MailFrequencyEnum.Daily => scheduledMail.NextMailDateTime.AddDays(1),
-            //     MailFrequencyEnum.Weekly => scheduledMail.NextMailDateTime.AddDays(7),
-            //     MailFrequencyEnum.Monthly => scheduledMail.NextMailDateTime.AddMonths(1),
-            //     _ => throw new Exception("Next mail date could'nt be calculated")
-            // };
-            
-            DateTime nextMailDateTime = scheduledMail.Frequency switch
-            {
-                MailFrequencyEnum.Daily => DateTime.Now.AddDays(1),
-                MailFrequencyEnum.Weekly => DateTime.Now.AddDays(7),
-                MailFrequencyEnum.Monthly => DateTime.Now.AddMonths(1),
-                _ => throw new Exception("Next mail date could'nt be calculated")
-            };
-
-            scheduledMail.NextMailDateTime = nextMailDateTime;
-            
-            if (scheduledMail.EndDate.HasValue && scheduledMail.EndDate.Value.Date < nextMailDateTime.Date)
-            {
-                scheduledMail.ScheduleStatus = ScheduledMailStatus.Ended;
-            }
-            
-            await context.SaveChangesAsync(token);
-
+            await client.SendAsync(mailMessage, token);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             _logger.LogError("\n");
-            _logger.LogError(e,$"Send Scheduled Mail {scheduledMail.ScheduledMailId} failure... {e.GetBaseException().Message}");
-            //throw;
+            _logger.LogError(ex, $"{ex.GetBaseException().Message}");
+            //log an error message or throw an exception or both.
+            throw;
+        }
+        finally
+        {
         }
     }
-    
-    private async Task Send(MimeMessage mailMessage, SmtpClient client)
-    {
-            try
-            {
-                
-                await client.SendAsync(mailMessage, token);
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError("\n");
-                _logger.LogError(ex,$"{ex.GetBaseException().Message}");
-                //log an error message or throw an exception or both.
-                throw;
-            }
-            finally
-            {
-            }
-    }
 }
+
 #endregion

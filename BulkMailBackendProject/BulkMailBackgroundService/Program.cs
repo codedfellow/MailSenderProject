@@ -14,7 +14,6 @@ namespace BulkMailBackgroundService
 
             try
             {
-                var builder = Host.CreateDefaultBuilder(args);
                 using var host = Host.CreateDefaultBuilder(args)
                     .ConfigureLogging((hostContext, loggingBuilder) =>
                     {

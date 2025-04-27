@@ -23,9 +23,7 @@ namespace BulkMailAPI
             var app = builder.Build();
 
             app.ConfigureMiddlewares();
-
-            app.MapControllers();
-
+            
             app.Run();
         }
     }

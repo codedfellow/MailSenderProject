@@ -42,6 +42,12 @@ const routes: Routes = [
         loadComponent: () => import('./schedule-mail/schedule-mail.component').then(mod => mod.ScheduleMailComponent),
         canActivate: [authGuard]
       },
+      {
+        path: 'user-profile',
+        // canActivate: [canActivateLoggedInAccess],
+        loadComponent: () => import('./user-profile/user-profile.component').then(mod => mod.UserProfileComponent),
+        canActivate: [authGuard]
+      },
     ]
   }
 ];

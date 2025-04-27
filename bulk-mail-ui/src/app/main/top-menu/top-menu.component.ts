@@ -24,4 +24,8 @@ export class TopMenuComponent {
     localStorage.removeItem('bulkmailtoken')
     this.router.navigate(['/'])
   }
+
+  goToProfile(){
+    this.router.navigate(['/','user-profile'])
+  }
 }

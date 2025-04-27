@@ -9,22 +9,28 @@
     // background-image: url('./../../../../assets/images/auth/login-bg.jpg');
     /* opacity: 0.9; */
     /* background: rgba(172, 168, 161, 0.3) */
-    background-size: cover;
-    // background-repeat: no-repeat;
-    // background-color: #07707e;
-    background-position: center;
+    // background-size: cover;
+    // // background-repeat: no-repeat;
+    // // background-color: #07707e;
+    // // background-position: center;
+    // background: url('./../../../../../public/images/tech-login-background.jpg') no-repeat center center;
 }
 
 .login-left {
     /* background-color: white; */
     min-height: 100%;
+    background-size: cover;
+    // background-repeat: no-repeat;
+    // background-color: #07707e;
+    background-position: center;
+    background: url('./../../../../../public/images/tech-login-background.jpg');
     // background-image: url('./../../../../assets/images/auth/login-bg.jpg');
     /* opacity: 0.9; */
     /* background: rgba(172, 168, 161, 0.3) */
-    // background-size: cover;
-    // background-repeat: no-repeat;
+    background-size: cover;
+    background-repeat: no-repeat;
     // background-color: #07707e;
-    background-color: transparent;
+    // background-color: transparent;
     // background-position: center;
 }
 
@@ -34,6 +40,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+input::-ms-reveal, input::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
 }
 
 .login-form {

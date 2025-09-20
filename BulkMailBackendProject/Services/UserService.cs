@@ -79,7 +79,7 @@ namespace Services
 
             string passWordHash = _passwordHasher.HashPassword(user, model.Password);
             user.Password = passWordHash;
-            user.CreatedAt = DateTime.Now;
+            user.CreatedAt = DateTime.UtcNow;
 
 
             await context.AddAsync(user,token);
@@ -102,7 +102,7 @@ namespace Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.JwtKey));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expires = DateTime.Now.AddMinutes(_jwtOptions.JwtExpireMins);
+            var expires = DateTime.UtcNow.AddMinutes(_jwtOptions.JwtExpireMins);
 
             var token = new JwtSecurityToken(
                 _jwtOptions.JwtIssuer,

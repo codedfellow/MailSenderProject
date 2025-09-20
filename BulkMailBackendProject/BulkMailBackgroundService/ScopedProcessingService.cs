@@ -50,11 +50,11 @@ internal class ScopedProcessingService : IScopedProcessingService
                 _logger.LogInformation("Scoped Processing Service is runnning...", executionCount);
 
                 var pastScheduledMails = await context.ScheduledMail.Where(x =>
-                        x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime.Date < DateTime.Now.Date)
+                        x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime.Date < DateTime.UtcNow.Date)
                     .ToListAsync();
 
                 var todayScheduledMails = await context.ScheduledMail.Where(x =>
-                        x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime.Date == DateTime.Now.Date)
+                        x.ScheduleStatus == ScheduledMailStatus.Active && x.NextMailDateTime.Date == DateTime.UtcNow.Date)
                     .ToListAsync();
 
                 var allMails = pastScheduledMails.Union(todayScheduledMails);
@@ -124,9 +124,9 @@ internal class ScopedProcessingService : IScopedProcessingService
 
                 DateTime nextMailDateTime = scheduledMail.Frequency switch
                 {
-                    MailFrequencyEnum.Daily => DateTime.Now.AddDays(1),
-                    MailFrequencyEnum.Weekly => DateTime.Now.AddDays(7),
-                    MailFrequencyEnum.Monthly => DateTime.Now.AddMonths(1),
+                    MailFrequencyEnum.Daily => DateTime.UtcNow.AddDays(1),
+                    MailFrequencyEnum.Weekly => DateTime.UtcNow.AddDays(7),
+                    MailFrequencyEnum.Monthly => DateTime.UtcNow.AddMonths(1),
                     _ => throw new Exception("Next mail date could'nt be calculated")
                 };
 

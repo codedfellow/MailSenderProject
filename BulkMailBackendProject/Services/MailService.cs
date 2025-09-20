@@ -58,7 +58,7 @@ public class MailService : IMailService
                 Body = model.mailBody,
                 MailStatus = EmailStatusEnum.Sent,
                 CreatedBy = userId,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 MailType = MailTypeEnum.Immediate
             };
 

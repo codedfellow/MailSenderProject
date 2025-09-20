@@ -40,7 +40,7 @@ public class MailSchedulingService : IMailSchedulingService
             StartDateTime = model.StartDateTime,
             NextMailDateTime = model.StartDateTime,
             IsContinuous = model.IsContinuous,
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTime.UtcNow,
             ScheduleStatus = ScheduledMailStatus.Active,
             Frequency = model.Frequency,
             EndDate = model.EndDate,
